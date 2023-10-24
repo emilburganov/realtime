@@ -10,6 +10,7 @@
 /* Colors */
 :root {
     --primary-color: #243dbe;
+    --danger-color: #be2424;
 }
 
 /* Base */
@@ -29,6 +30,35 @@ body {
     align-items: center;
     justify-content: center;
     min-height: 100vh;
+}
+
+.flex {
+    display: flex;
+}
+
+.col {
+    flex-direction: column;
+}
+
+.sb {
+    justify-content: space-between;
+}
+
+.ac {
+    align-items: center;
+}
+
+.g-20 {
+    gap: 20px;
+}
+
+.w-600 {
+    max-width: 500px;
+    width: 100%;
+}
+
+.wrap {
+    flex-wrap: wrap;
 }
 
 /* Card */
@@ -81,9 +111,26 @@ body {
     opacity: .9;
 }
 
+.button.danger {
+    background-color: var(--danger-color);
+    border-color: var(--danger-color);
+}
+
+.icon-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+}
+
 /* List */
 .list {
     display: flex;
     flex-direction: column;
     gap: 16px;
+}
+
+/* Message */
+.message__text {
+    word-break: break-word;
 }

@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const events = require("events");
 
-import {Application, Request, Response} from "express";
+import {Application, json, Request, Response} from "express";
 
 const PORT = 5000;
 
@@ -10,6 +10,7 @@ const app: Application = express();
 const emitter = new events.EventEmitter();
 
 app.use(cors());
+app.use(express.json())
 
 app.get("/messages", (req: Request, res: Response) => {
     emitter.once("newMessage", (message: string) => {
