@@ -1,5 +1,5 @@
 import {useContext} from "react";
-import {MessagesContext} from "../context/MessagesContext";
+import {MessagesContext, MessagesContextType} from "../context/MessagesContext";
 import {IMessage} from "../models/IMessage";
 
 interface MessageProps {
@@ -7,7 +7,7 @@ interface MessageProps {
 }
 
 const Message = ({message}: MessageProps) => {
-    const {messages, setMessages} = useContext(MessagesContext);
+    const {messages, setMessages} = useContext<MessagesContextType>(MessagesContext);
 
     const destroyMessage = () => {
         setMessages([...messages].filter((_message) => _message.id !== message.id));

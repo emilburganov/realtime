@@ -1,10 +1,10 @@
 import {useContext} from "react";
-import {MessagesContext} from "../context/MessagesContext";
+import {MessagesContext, MessagesContextType} from "../context/MessagesContext";
 import {IMessage} from "../models/IMessage";
 import Message from "./Message";
 
 const MessagesList = () => {
-    const {messages} = useContext(MessagesContext);
+    const {messages} = useContext<MessagesContextType>(MessagesContext);
 
     return (
         <div className="list">

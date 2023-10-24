@@ -1,9 +1,12 @@
-import {createContext} from 'react';
+import {createContext, Dispatch, SetStateAction} from "react";
 import {IMessage} from "../models/IMessage";
 
-interface MessagesContextType {
+export interface MessagesContextType {
     messages: IMessage[];
-    setMessages: void;
+    setMessages: Dispatch<SetStateAction<IMessage[]>>;
 }
 
-export const MessagesContext = createContext<MessagesContextType | null>(null);
+export const MessagesContext = createContext<MessagesContextType>({
+    messages: [],
+    setMessages: () => {}
+});

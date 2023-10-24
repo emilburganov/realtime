@@ -1,11 +1,11 @@
 import axios from "axios";
-import {useEffect, useState} from "react";
+import {ChangeEvent, FC, MouseEvent, useEffect, useState} from "react";
 import MessagesList from "../components/MessagesList";
 import {API_URL} from "../constants";
 import {MessagesContext} from "../context/MessagesContext";
 import {IMessage} from "../models/IMessage";
 
-const LongPooling = () => {
+const LongPooling: FC = () => {
     const [messages, setMessages] = useState<IMessage[]>([]);
     const [messageValue, setMessageValue] = useState<string>("");
 
@@ -17,7 +17,7 @@ const LongPooling = () => {
      * Subscribe on Long Polling
      * @returns {Promise<void>}
      */
-    const subscribe = async () => {
+    const subscribe = async (): Promise<void> => {
         try {
             const {data} = await axios.get(API_URL + "/messages");
             setMessages((prevState) => [data, ...prevState]);
@@ -33,7 +33,7 @@ const LongPooling = () => {
      * Message input change handle (data binding)
      * @param event
      */
-    const handleMessageChange = (event) => {
+    const handleMessageChange = (event: ChangeEvent<HTMLInputElement>): void => {
         setMessageValue(event.target.value);
     };
 
@@ -41,7 +41,7 @@ const LongPooling = () => {
      * Send message method
      * @returns {Promise<void>}
      */
-    const sendMessage = async (event) => {
+    const sendMessage = async (event: MouseEvent<HTMLButtonElement>): Promise<void> => {
         event.preventDefault();
 
         if (messageValue === "") {
@@ -72,7 +72,7 @@ const LongPooling = () => {
                             />
                         </div>
                         <button
-                            onClick={sendMessage}
+                            onClick={(event) => sendMessage(event)}
                             className="button"
                             type="submit"
                         >
