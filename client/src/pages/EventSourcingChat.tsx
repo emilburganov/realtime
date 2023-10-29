@@ -1,35 +1,32 @@
 import axios from "axios";
 import {FC, MouseEvent, useEffect, useState} from "react";
 import MessagesList from "../components/MessagesList";
-import Navigation from "../components/Navigation";
+import Navigation from "../components/UI/Navigation/Navigation";
 import Button from "../components/UI/Button/Button";
 import Input from "../components/UI/Input/Input";
 import {API_URL} from "../constants";
 import {MessagesContext} from "../context/MessagesContext";
 import {IMessage} from "../models/IMessage";
 
-const LongPooling: FC = () => {
+const EventSourcingChat: FC = () => {
     const [messages, setMessages] = useState<IMessage[]>([]);
-    const [messageValue, setMessageValue] = useState<string>("");
+    const [message, setMessage] = useState<string>("");
 
     useEffect(() => {
         subscribe();
     }, []);
 
     /**
-     * Subscribe on Long Polling
+     * Subscribe on Event Sourcing
      * @returns {Promise<void>}
      */
     const subscribe = async (): Promise<void> => {
-        try {
-            const {data} = await axios.get<IMessage>(API_URL + "/messages");
-            setMessages((prevMessages) => [data, ...prevMessages]);
-            await subscribe();
-        } catch {
-            setTimeout(() => {
-                subscribe();
-            }, 500);
-        }
+        const eventSource = new EventSource(API_URL + "/messages");
+
+        eventSource.onmessage = (event) => {
+            const messages = JSON.parse(event.data);
+            setMessages((prevMessages) => [messages, ...prevMessages]);
+        };
     };
 
     /**
@@ -39,15 +36,15 @@ const LongPooling: FC = () => {
     const sendMessage = async (event: MouseEvent<HTMLButtonElement>): Promise<void> => {
         event.preventDefault();
 
-        if (messageValue === "") {
+        if (message === "") {
             return;
         }
 
-        setMessageValue("");
+        setMessage("");
 
         await axios.post(API_URL + "/messages", {
             id: Date.now(),
-            message: messageValue,
+            message,
         });
     };
 
@@ -57,11 +54,11 @@ const LongPooling: FC = () => {
                 <div className="flex col g-20 w-600">
                     <Navigation/>
                     <form className="card form">
-                        <h3>Realtime Chat Form (LongPooling)</h3>
+                        <h3>Realtime Chat (EventSourcing)</h3>
                         <Input
                             label="Message"
-                            value={messageValue}
-                            setValue={setMessageValue}
+                            value={message}
+                            setValue={setMessage}
                         />
                         <Button
                             onClick={(event: MouseEvent<HTMLButtonElement>) => sendMessage(event)}
@@ -77,4 +74,4 @@ const LongPooling: FC = () => {
     );
 };
 
-export default LongPooling;
+export default EventSourcingChat;

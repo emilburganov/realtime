@@ -17,13 +17,19 @@ const Message: FC<MessageProps> = ({message}) => {
 
     return (
         <div className="card flex sb ac g-20">
-            <div className="flex g-20 ac">
+            <div className="message flex g-20 ac">
                 <UserIcon/>
-                <p className="message__text">
-                    {message.message}
-                </p>
+                {message?.event === "connection" ?
+                    <p className="message__text">
+                        User <span>{message.username}</span> connected!
+                    </p>
+                    :
+                    <p className="message__text">
+                        {message.message}
+                    </p>
+                }
             </div>
-            <DestroyButton onClick={destroyMessage}/>
+            {message?.event === "message" && <DestroyButton onClick={destroyMessage}/>}
         </div>
     );
 };
