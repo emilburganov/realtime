@@ -16,7 +16,7 @@ const Message: FC<MessageProps> = ({message}) => {
     };
 
     return (
-        <div className="message card flex sb ac g-20">
+        <div className="card flex sb ac g-20">
             <div className="flex g-20 ac">
                 <UserIcon/>
                 <p className="message__text">
