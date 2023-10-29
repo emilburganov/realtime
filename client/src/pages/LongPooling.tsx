@@ -1,6 +1,8 @@
 import axios from "axios";
-import {ChangeEvent, FC, MouseEvent, useEffect, useState} from "react";
+import {FC, MouseEvent, useEffect, useState} from "react";
 import MessagesList from "../components/MessagesList";
+import Button from "../components/UI/Button/Button";
+import Input from "../components/UI/Input/Input";
 import {API_URL} from "../constants";
 import {MessagesContext} from "../context/MessagesContext";
 import {IMessage} from "../models/IMessage";
@@ -19,22 +21,14 @@ const LongPooling: FC = () => {
      */
     const subscribe = async (): Promise<void> => {
         try {
-            const {data} = await axios.get(API_URL + "/messages");
-            setMessages((prevState) => [data, ...prevState]);
+            const {data} = await axios.get<IMessage>(API_URL + "/messages");
+            setMessages((prevMessages) => [data, ...prevMessages]);
             await subscribe();
         } catch {
             setTimeout(() => {
                 subscribe();
             }, 500);
         }
-    };
-
-    /**
-     * Message input change handle (data binding)
-     * @param event
-     */
-    const handleMessageChange = (event: ChangeEvent<HTMLInputElement>): void => {
-        setMessageValue(event.target.value);
     };
 
     /**
@@ -62,22 +56,17 @@ const LongPooling: FC = () => {
                 <div className="flex col g-20 w-600">
                     <form className="card form">
                         <h3>Realtime Chat Form</h3>
-                        <div className="input-group">
-                            <label>Message</label>
-                            <input
-                                value={messageValue}
-                                onChange={handleMessageChange}
-                                className="input"
-                                type="text"
-                            />
-                        </div>
-                        <button
-                            onClick={(event) => sendMessage(event)}
-                            className="button"
+                        <Input
+                            label="Message"
+                            value={messageValue}
+                            setValue={setMessageValue}
+                        />
+                        <Button
+                            onClick={(event: MouseEvent<HTMLButtonElement>) => sendMessage(event)}
                             type="submit"
                         >
                             Send Message
-                        </button>
+                        </Button>
                     </form>
                     <MessagesList/>
                 </div>

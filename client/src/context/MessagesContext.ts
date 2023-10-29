@@ -8,5 +8,5 @@ export interface MessagesContextType {
 
 export const MessagesContext = createContext<MessagesContextType>({
     messages: [],
-    setMessages: () => {}
+    setMessages: () => {},
 });
